@@ -30,7 +30,21 @@ namespace FaceCopy
 
         private void FaceImageControl_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText("[img]" + Face.URL + "[/img]");
+            try {
+                MouseEventArgs me = (MouseEventArgs)e;
+                if (me.Button == MouseButtons.Right)
+                {
+                    // spawn menu to delete/modify
+
+                }
+                else
+                {
+                    // default behavior, copy URL to clipboard
+                    Clipboard.SetText("[img]" + Face.URL + "[/img]");
+                }
+            } catch ( InvalidCastException ) {
+                // was apparently not a mouse click!
+            }
         }
     }
 }
