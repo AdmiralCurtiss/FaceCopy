@@ -53,10 +53,29 @@ namespace FaceCopy
                         WebResponse response = req.GetResponse();
                         Stream stream = response.GetResponseStream();
                         _Face = System.Drawing.Image.FromStream(stream);
+
+                        // write to HDD
+                        String folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\FaceCopy";
+                        System.IO.Directory.CreateDirectory(folder);
+
+                        String filename = URL.Substring(URL.LastIndexOf('/')+1);
+                        String path = folder + "\\" + filename;
+                        FileStream fs = System.IO.File.Open(path, FileMode.Create);
+
+                        Byte[] buffer = new byte[1024*8];
+                        while ( stream.Position != stream.Length ) {
+                            stream.Read(buffer, 0, 1024 * 8);
+                            fs.Write(buffer, 0, 1024 * 8);
+                        }
+                        fs.Close();
+
+                        // alter path to match
+                        this.Path = path;
+
                         stream.Close();
                         stream.Dispose();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         _Face = FaceCopy.Properties.Resources.CouldNotOpenImage;
                     }

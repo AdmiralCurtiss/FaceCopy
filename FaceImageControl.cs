@@ -26,13 +26,27 @@ namespace FaceCopy
 
             List<MenuItem> menuitems = new List<MenuItem>();
 
-            MenuItem mi = new MenuItem("Delete");
+            MenuItem mi;
+            mi = new MenuItem("Edit URL");
+            mi.Click += new EventHandler(mi_EditURL_Click);
+            menuitems.Add(mi);
+
+            mi = new MenuItem("Delete");
             mi.Click += new EventHandler(mi_Delete_Click);
             menuitems.Add(mi);
 
 
             RightClickMenuItems = menuitems.ToArray();
             RightClickMenu = new System.Windows.Forms.ContextMenu(RightClickMenuItems);
+        }
+
+        void mi_EditURL_Click(object sender, EventArgs e)
+        {
+            InputBoxResult r = InputBox.Show("URL:", "Image URL", this.Face.URL, null);
+            if (r.OK)
+            {
+                this.Face.URL = r.Text;
+            }
         }
 
         void mi_Delete_Click(object sender, EventArgs e)
