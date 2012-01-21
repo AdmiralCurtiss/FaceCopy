@@ -117,7 +117,7 @@
             this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.tabControl1);
             this.Name = "FaceForm";
-            this.Text = "FaceCopy v1.0";
+            this.Text = "FaceCopy v1.1";
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 

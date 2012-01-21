@@ -52,7 +52,6 @@ namespace FaceCopy
                         WebRequest req = WebRequest.Create(URL);
                         WebResponse response = req.GetResponse();
                         Stream stream = response.GetResponseStream();
-                        _Face = System.Drawing.Image.FromStream(stream);
 
                         // write to HDD
                         String folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\FaceCopy";
@@ -63,9 +62,10 @@ namespace FaceCopy
                         FileStream fs = System.IO.File.Open(path, FileMode.Create);
 
                         Byte[] buffer = new byte[1024*8];
-                        while ( stream.Position != stream.Length ) {
-                            stream.Read(buffer, 0, 1024 * 8);
-                            fs.Write(buffer, 0, 1024 * 8);
+                        int bytesread = 0;
+                        while ((bytesread = stream.Read(buffer, 0, 1024 * 8)) > 0)
+                        {
+                            fs.Write(buffer, 0, bytesread);
                         }
                         fs.Close();
 
@@ -74,6 +74,8 @@ namespace FaceCopy
 
                         stream.Close();
                         stream.Dispose();
+
+                        _Face = System.Drawing.Image.FromFile(path);
                     }
                     catch (Exception ex)
                     {
