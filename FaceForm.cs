@@ -55,7 +55,7 @@ namespace FaceCopy
             {
                 TabPage p = new TabPage(KVP.Key);
                 p.Size = new Size(width, height);
-                f = new FaceControl(KVP.Key, KVP.Value);
+                f = new FaceControl(KVP.Key, KVP.Value, AllFacesControl);
                 f.Size = new Size(width, height);
                 f.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 p.Controls.Add(f);
@@ -130,7 +130,7 @@ namespace FaceCopy
 
                 TabPage p = new TabPage(r.Text);
                 p.Size = new Size(tabPage1.Size.Width, tabPage1.Size.Height);
-                FaceControl f = new FaceControl(r.Text, l);
+                FaceControl f = new FaceControl(r.Text, l, AllFacesControl);
                 f.Size = new Size(tabPage1.Size.Width, tabPage1.Size.Height);
                 f.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 p.Controls.Add(f);

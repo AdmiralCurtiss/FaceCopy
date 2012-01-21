@@ -15,13 +15,17 @@ namespace FaceCopy
         String Category;
         List<FaceImage> ImageList;
 
-        public FaceControl(String Category, List<FaceImage> ImageList)
+        // the control for the "all" category
+        FaceControl AllControl;
+
+        public FaceControl(String Category, List<FaceImage> ImageList, FaceControl AllControl)
         {
             InitializeComponent();
 
             this.Category = Category;
             this.ImageList = ImageList;
             this.XML = null;
+            this.AllControl = AllControl;
             FillViewFromList();
         }
         public FaceControl(FaceXML XML)
@@ -31,6 +35,7 @@ namespace FaceCopy
             this.Category = null;
             this.ImageList = null;
             this.XML = XML;
+            this.AllControl = null;
             FillViewFromXML();
         }
 
@@ -82,6 +87,10 @@ namespace FaceCopy
             if (XML != null)
             {
                 XML.Remove(faceImageControl.Face.Category, faceImageControl.Face);
+            }
+            else
+            {
+
             }
             flowLayoutPanel1.ResumeLayout(true);
             flowLayoutPanel1.Refresh();
