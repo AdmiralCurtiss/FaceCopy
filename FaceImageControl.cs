@@ -14,9 +14,9 @@ namespace FaceCopy
         public FaceImage Face;
         private ContextMenu RightClickMenu;
         private MenuItem[] RightClickMenuItems;
-        private FaceControl FaceControlParent;
+        private FaceImageListControl FaceControlParent;
 
-        public FaceImageControl(FaceImage Face, FaceControl FaceControlParent)
+        public FaceImageControl(FaceImage Face, FaceImageListControl FaceControlParent)
         {
             this.Face = Face;
             this.FaceControlParent = FaceControlParent;
@@ -37,7 +37,7 @@ namespace FaceCopy
 
         void mi_Delete_Click(object sender, EventArgs e)
         {
-            FaceControlParent.Remove(this);
+            FaceControlParent.Remove(this, true);
         }
 
 
@@ -64,6 +64,25 @@ namespace FaceCopy
             } catch ( InvalidCastException ) {
                 // was apparently not a mouse click!
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                FaceImageControl fic = (FaceImageControl)obj;
+                bool equal = this.Face == fic.Face;
+                return equal;
+            }
+            catch (InvalidCastException)
+            {
+                return base.Equals(obj);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Face.GetHashCode();
         }
     }
 }

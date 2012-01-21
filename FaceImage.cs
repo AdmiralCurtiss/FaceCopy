@@ -78,5 +78,10 @@ namespace FaceCopy
             this.URL = URL;
             this.Path = Path;
         }
+
+        public override string ToString()
+        {
+            return "[" + this.Category + "] " + this.Path;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace FaceCopy
 {
-    partial class FaceControl
+    partial class FaceImageListControl
     {
         /// <summary> 
         /// Required designer variable.

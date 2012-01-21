@@ -9,16 +9,17 @@ using System.Windows.Forms;
 
 namespace FaceCopy
 {
-    public partial class FaceControl : UserControl
+    public partial class FaceImageListControl : UserControl
     {
         FaceXML XML;
         String Category;
         List<FaceImage> ImageList;
 
         // the control for the "all" category
-        FaceControl AllControl;
+        FaceImageListControl AllControl;
+        FaceForm ParentFaceForm;
 
-        public FaceControl(String Category, List<FaceImage> ImageList, FaceControl AllControl)
+        public FaceImageListControl(String Category, List<FaceImage> ImageList, FaceImageListControl AllControl, FaceForm ParentForm)
         {
             InitializeComponent();
 
@@ -26,9 +27,10 @@ namespace FaceCopy
             this.ImageList = ImageList;
             this.XML = null;
             this.AllControl = AllControl;
+            this.ParentFaceForm = ParentForm;
             FillViewFromList();
         }
-        public FaceControl(FaceXML XML)
+        public FaceImageListControl(FaceXML XML, FaceForm ParentForm)
         {
             InitializeComponent();
 
@@ -36,6 +38,7 @@ namespace FaceCopy
             this.ImageList = null;
             this.XML = XML;
             this.AllControl = null;
+            this.ParentFaceForm = ParentForm;
             FillViewFromXML();
         }
 
@@ -80,20 +83,46 @@ namespace FaceCopy
             this.flowLayoutPanel1.ResumeLayout(false);
         }
 
-        internal void Remove(FaceImageControl faceImageControl)
+        public void Remove(FaceImageControl faceImageControl, bool AllowRecursiveRemove)
         {
             flowLayoutPanel1.SuspendLayout();
-            flowLayoutPanel1.Controls.Remove(faceImageControl);
+
+            // no idew how this internally compares stuff, apparently not with Equals() which is fucking dumb but oh well
+            //flowLayoutPanel1.Controls.Remove(faceImageControl);
+            // let's do this manually then... *sigh*
+            foreach (FaceImageControl c in flowLayoutPanel1.Controls)
+            {
+                if (c.Face == faceImageControl.Face)
+                {
+                    flowLayoutPanel1.Controls.Remove(c);
+                }
+            }
+
+
             if (XML != null)
             {
+                // is the "all" control
                 XML.Remove(faceImageControl.Face.Category, faceImageControl.Face);
+                if (AllowRecursiveRemove)
+                {
+                    // delete from category it belongs to as well
+                    ParentFaceForm.FaceControls[faceImageControl.Face.Category].Remove(faceImageControl, false);
+                }
             }
             else
             {
-
+                // is a category
+                ImageList.Remove(faceImageControl.Face);
+                if (AllowRecursiveRemove)
+                {
+                    // delete from all control as well
+                    AllControl.Remove(faceImageControl, false);
+                }
             }
             flowLayoutPanel1.ResumeLayout(true);
             flowLayoutPanel1.Refresh();
         }
+
+
     }
 }

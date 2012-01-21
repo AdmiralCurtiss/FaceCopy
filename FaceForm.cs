@@ -11,17 +11,17 @@ namespace FaceCopy
 {
     public partial class FaceForm : Form
     {
-        FaceXML XML;
-        FaceControl AllFacesControl;
-        Dictionary<String, FaceControl> FaceControls;
+        public FaceXML XML;
+        public FaceImageListControl AllFacesControl;
+        public Dictionary<String, FaceImageListControl> FaceControls;
 
         public FaceForm()
         {
             InitializeComponent();
 
             XML = new FaceXML();
-            AllFacesControl = new FaceControl(XML);
-            FaceControls = new Dictionary<string, FaceControl>();
+            AllFacesControl = new FaceImageListControl(XML, this);
+            FaceControls = new Dictionary<string, FaceImageListControl>();
         }
 
         public FaceForm(FaceXML XML)
@@ -43,19 +43,19 @@ namespace FaceCopy
             int width = tabPage1.Size.Width;
             int height = tabPage1.Size.Height;
 
-            FaceControl f = new FaceControl(XML);
+            FaceImageListControl f = new FaceImageListControl(XML, this);
             f.Size = new Size(width, height);
             f.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             this.tabPage1.Controls.Add(f);
 
             AllFacesControl = f;
-            FaceControls = new Dictionary<string, FaceControl>();
+            FaceControls = new Dictionary<string, FaceImageListControl>();
 
             foreach (KeyValuePair<String, List<FaceImage>> KVP in XML.Categories)
             {
                 TabPage p = new TabPage(KVP.Key);
                 p.Size = new Size(width, height);
-                f = new FaceControl(KVP.Key, KVP.Value, AllFacesControl);
+                f = new FaceImageListControl(KVP.Key, KVP.Value, AllFacesControl, this);
                 f.Size = new Size(width, height);
                 f.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 p.Controls.Add(f);
@@ -106,14 +106,20 @@ namespace FaceCopy
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabPage1)
+            if (tabControl1.SelectedTab == tabPage1 || tabControl1.SelectedTab == null)
             {
+                // All category
                 this.buttonAddImage.Enabled = false;
+                AllFacesControl.Refresh();
             }
             else
             {
+                // any category
                 this.buttonAddImage.Enabled = true;
+                FaceControls[tabControl1.SelectedTab.Text].Refresh();
             }
+
+
         }
 
         private void buttonAddCategory_Click(object sender, EventArgs e)
@@ -130,7 +136,7 @@ namespace FaceCopy
 
                 TabPage p = new TabPage(r.Text);
                 p.Size = new Size(tabPage1.Size.Width, tabPage1.Size.Height);
-                FaceControl f = new FaceControl(r.Text, l, AllFacesControl);
+                FaceImageListControl f = new FaceImageListControl(r.Text, l, AllFacesControl, this);
                 f.Size = new Size(tabPage1.Size.Width, tabPage1.Size.Height);
                 f.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 p.Controls.Add(f);
