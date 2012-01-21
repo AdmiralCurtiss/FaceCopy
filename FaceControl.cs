@@ -42,7 +42,7 @@ namespace FaceCopy
             }
 
             flowLayoutPanel1.SuspendLayout();
-            flowLayoutPanel1.Controls.Add(new FaceImageControl(Face));
+            flowLayoutPanel1.Controls.Add(new FaceImageControl(Face, this));
             flowLayoutPanel1.ResumeLayout(true);
             flowLayoutPanel1.Refresh();
         }
@@ -54,7 +54,7 @@ namespace FaceCopy
 
             foreach (FaceImage f in ImageList)
             {
-                flowLayoutPanel1.Controls.Add(new FaceImageControl(f));
+                flowLayoutPanel1.Controls.Add(new FaceImageControl(f, this));
             }
 
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -68,11 +68,23 @@ namespace FaceCopy
             {
                 foreach (FaceImage f in l)
                 {
-                    flowLayoutPanel1.Controls.Add(new FaceImageControl(f));
+                    flowLayoutPanel1.Controls.Add(new FaceImageControl(f, this));
                 }
             }
 
             this.flowLayoutPanel1.ResumeLayout(false);
+        }
+
+        internal void Remove(FaceImageControl faceImageControl)
+        {
+            flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel1.Controls.Remove(faceImageControl);
+            if (XML != null)
+            {
+                XML.Remove(faceImageControl.Face.Category, faceImageControl.Face);
+            }
+            flowLayoutPanel1.ResumeLayout(true);
+            flowLayoutPanel1.Refresh();
         }
     }
 }

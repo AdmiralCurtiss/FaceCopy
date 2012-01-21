@@ -32,7 +32,7 @@ namespace FaceCopy
                     String URL = Image["url"].InnerText;
                     String Path = Image["path"].InnerText;
 
-                    FaceImageList.Add(new FaceImage(URL, Path));
+                    FaceImageList.Add(new FaceImage(CategoryName, URL, Path));
                 }
 
                 Categories.Add(CategoryName, FaceImageList);
@@ -81,6 +81,11 @@ namespace FaceCopy
 
             sb.AppendLine("</categories>");
             return sb.ToString();
+        }
+
+        internal void Remove(string Category, FaceImage faceImage)
+        {
+            Categories[Category].Remove(faceImage);
         }
     }
 }

@@ -11,14 +11,33 @@ namespace FaceCopy
 {
     public partial class FaceImageControl : Control
     {
-        private FaceImage Face;
+        public FaceImage Face;
+        private ContextMenu RightClickMenu;
+        private MenuItem[] RightClickMenuItems;
+        private FaceControl FaceControlParent;
 
-        public FaceImageControl(FaceImage Face)
+        public FaceImageControl(FaceImage Face, FaceControl FaceControlParent)
         {
             this.Face = Face;
+            this.FaceControlParent = FaceControlParent;
             InitializeComponent();
 
             SetBounds(0, 0, Face.Face.Width, Face.Face.Height);
+
+            List<MenuItem> menuitems = new List<MenuItem>();
+
+            MenuItem mi = new MenuItem("Delete");
+            mi.Click += new EventHandler(mi_Delete_Click);
+            menuitems.Add(mi);
+
+
+            RightClickMenuItems = menuitems.ToArray();
+            RightClickMenu = new System.Windows.Forms.ContextMenu(RightClickMenuItems);
+        }
+
+        void mi_Delete_Click(object sender, EventArgs e)
+        {
+            FaceControlParent.Remove(this);
         }
 
 
@@ -35,7 +54,7 @@ namespace FaceCopy
                 if (me.Button == MouseButtons.Right)
                 {
                     // spawn menu to delete/modify
-
+                    RightClickMenu.GetContextMenu().Show(this, new Point(me.X, me.Y));
                 }
                 else
                 {

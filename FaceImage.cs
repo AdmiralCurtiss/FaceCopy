@@ -23,6 +23,8 @@ namespace FaceCopy
             }
         }
 
+        public String Category;
+
         private String _Filename = null;
 
         public System.Drawing.Image Face {
@@ -62,15 +64,17 @@ namespace FaceCopy
             }
         }
 
-
-        public FaceImage(String URL)
+        /*
+        public FaceImage(String Category, String URL)
         {
+            this.Category = Category;
             this.URL = URL;
             this.Path = null;
         }
-
-        public FaceImage(String URL, String Path)
+        */
+        public FaceImage(String Category, String URL, String Path)
         {
+            this.Category = Category;
             this.URL = URL;
             this.Path = Path;
         }

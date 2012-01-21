@@ -17,7 +17,17 @@ namespace FaceCopy
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length == 1)
             {
-                Application.Run(new FaceForm(new FaceXML(args[0])));
+                FaceForm f;
+                try
+                {
+                    f = new FaceForm(new FaceXML(args[0]));
+                }
+                catch ( Exception )
+                {
+                    f = new FaceForm();
+                }
+
+                Application.Run(f);
             }
             else
             {
