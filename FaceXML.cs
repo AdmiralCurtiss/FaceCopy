@@ -30,9 +30,14 @@ namespace FaceCopy
                 foreach (XmlElement Image in Category.GetElementsByTagName("image"))
                 {
                     String URL = Image["url"].InnerText;
-                    String Path = Image["path"].InnerText;
+                    XmlNodeList Paths = Image.GetElementsByTagName("path");
+                    List<String> Pathlist = new List<string>();
+                    foreach (XmlElement Path in Paths)
+                    {
+                        Pathlist.Add(Path.InnerText);
+                    }
 
-                    FaceImageList.Add(new FaceImage(CategoryName, URL, Path));
+                    FaceImageList.Add(new FaceImage(CategoryName, URL, Pathlist));
                 }
 
                 Categories.Add(CategoryName, FaceImageList);
@@ -73,7 +78,11 @@ namespace FaceCopy
                 {
                     sb.AppendLine("\t\t<image>");
                     sb.Append("\t\t\t<url>").Append(f.URL).AppendLine("</url>");
-                    sb.Append("\t\t\t<path>").Append(f.Path).AppendLine("</path>");
+                    List<String> Paths = f.Paths;
+                    foreach (String Path in Paths.Distinct())
+                    {
+                        sb.Append("\t\t\t<path>").Append(Path).AppendLine("</path>");
+                    }
                     sb.AppendLine("\t\t</image>");
                 }
                 sb.AppendLine("\t</category>");

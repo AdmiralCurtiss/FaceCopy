@@ -10,7 +10,9 @@ namespace FaceCopy
     public class FaceImage
     {
         public String URL;
-        public String Path;
+        public List<String> Paths;
+
+        /*
         public String Filename
         {
             get
@@ -22,10 +24,10 @@ namespace FaceCopy
                 return _Filename;
             }
         }
+        */
+        //private String _Filename = null;
 
         public String Category;
-
-        private String _Filename = null;
 
         public System.Drawing.Image Face {
             get {
@@ -39,70 +41,81 @@ namespace FaceCopy
 
 
         private void LoadFace() {
-            if (Path != null)
+            // try to load from all paths in order
+            foreach (String Path in Paths)
             {
-                try
-                {
-                    _Face = System.Drawing.Image.FromFile(Path);
-                }
-                catch (Exception)
+                if (Path != null)
                 {
                     try
                     {
-                        WebRequest req = WebRequest.Create(URL);
-                        WebResponse response = req.GetResponse();
-                        Stream stream = response.GetResponseStream();
-
-                        // write to HDD
-                        String folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\FaceCopy";
-                        System.IO.Directory.CreateDirectory(folder);
-
-                        String filename = URL.Substring(URL.LastIndexOf('/')+1);
-                        String path = folder + "\\" + filename;
-                        FileStream fs = System.IO.File.Open(path, FileMode.Create);
-
-                        Byte[] buffer = new byte[1024*8];
-                        int bytesread = 0;
-                        while ((bytesread = stream.Read(buffer, 0, 1024 * 8)) > 0)
-                        {
-                            fs.Write(buffer, 0, bytesread);
-                        }
-                        fs.Close();
-
-                        // alter path to match
-                        this.Path = path;
-
-                        stream.Close();
-                        stream.Dispose();
-
-                        _Face = System.Drawing.Image.FromFile(path);
+                        _Face = System.Drawing.Image.FromFile(Path);
+                        break; // successfully loaded, further paths are unneccessary
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        _Face = FaceCopy.Properties.Resources.CouldNotOpenImage;
+                        _Face = null;
                     }
+                }
+            }
+
+            // if face is still null after all paths have been attempted
+            if (_Face == null)
+            {
+                try
+                {
+                    WebRequest req = WebRequest.Create(URL);
+                    WebResponse response = req.GetResponse();
+                    Stream stream = response.GetResponseStream();
+
+                    // write to HDD
+                    String folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\FaceCopy";
+                    System.IO.Directory.CreateDirectory(folder);
+
+                    String filename = URL.Substring(URL.LastIndexOf('/') + 1);
+                    String path = folder + "\\" + filename;
+                    FileStream fs = System.IO.File.Open(path, FileMode.Create);
+
+                    Byte[] buffer = new byte[1024 * 8];
+                    int bytesread = 0;
+                    while ((bytesread = stream.Read(buffer, 0, 1024 * 8)) > 0)
+                    {
+                        fs.Write(buffer, 0, bytesread);
+                    }
+                    fs.Close();
+
+                    // add new paths to path list
+                    this.Paths.Add(path);
+
+                    stream.Close();
+                    stream.Dispose();
+
+                    _Face = System.Drawing.Image.FromFile(path);
+                }
+                catch (Exception ex)
+                {
+                    _Face = FaceCopy.Properties.Resources.CouldNotOpenImage;
                 }
             }
         }
 
-        /*
-        public FaceImage(String Category, String URL)
-        {
-            this.Category = Category;
-            this.URL = URL;
-            this.Path = null;
-        }
-        */
         public FaceImage(String Category, String URL, String Path)
         {
             this.Category = Category;
             this.URL = URL;
-            this.Path = Path;
+            this.Paths = new List<String>();
+            this.Paths.Add(Path);
+        }
+
+        public FaceImage(String Category, String URL, List<String> Paths)
+        {
+            this.Category = Category;
+            this.URL = URL;
+            this.Paths = Paths;
         }
 
         public override string ToString()
         {
-            return "[" + this.Category + "] " + this.Path;
+            return "[" + this.Category + "] " + this.Paths.FirstOrDefault();
         }
     }
 }
