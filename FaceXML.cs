@@ -90,7 +90,7 @@ namespace FaceCopy
                     }
                     if (!String.IsNullOrEmpty(f.Name))
                     {
-                        sb.AppendLine("\t\t\t<name>").Append(f.Name).AppendLine("</name>");
+                        sb.Append("\t\t\t<name>").Append(f.Name).AppendLine("</name>");
                     }
                     sb.AppendLine("\t\t</image>");
                 }
@@ -104,6 +104,35 @@ namespace FaceCopy
         internal void Remove(string Category, FaceImage faceImage)
         {
             Categories[Category].Remove(faceImage);
+        }
+
+        public bool ReplaceInUpdate(string p)
+        {
+            try
+            {
+                String update = System.IO.File.ReadAllText(p);
+                foreach (KeyValuePair<String, List<FaceImage>> KVP in Categories)
+                {
+                    foreach (FaceImage f in KVP.Value)
+                    {
+                        if (!String.IsNullOrEmpty(f.Name))
+                        {
+                            update = update.Replace(f.Name, "[img]" + f.URL + "[/img]");
+                        }
+                    }
+                }
+
+                String dir = System.IO.Path.GetDirectoryName(p);
+                String fn = System.IO.Path.GetFileNameWithoutExtension(p);
+                String ext = System.IO.Path.GetExtension(p);
+                String newname = dir + System.IO.Path.DirectorySeparatorChar + fn + "_replaced" + ext;
+                System.IO.File.WriteAllText(newname, update);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

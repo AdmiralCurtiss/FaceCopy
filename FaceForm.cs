@@ -161,5 +161,16 @@ namespace FaceCopy
                 this.ResumeLayout(true);
             }
         }
+
+        private void buttonReplaceInUpdate_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.Filter = "Text file (*.txt)|*.txt|Any File|*.*";
+            DialogResult result = dialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                this.XML.ReplaceInUpdate(dialog.FileName);
+            }
+        }
     }
 }

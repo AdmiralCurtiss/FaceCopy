@@ -34,6 +34,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonAddImage = new System.Windows.Forms.Button();
             this.buttonAddCategory = new System.Windows.Forms.Button();
+            this.buttonReplaceInUpdate = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,7 +45,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(394, 296);
+            this.tabPage1.Size = new System.Drawing.Size(717, 296);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "All";
             // 
@@ -57,7 +58,7 @@
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(402, 322);
+            this.tabControl1.Size = new System.Drawing.Size(725, 322);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -87,7 +88,7 @@
             // 
             this.buttonAddImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAddImage.Enabled = false;
-            this.buttonAddImage.Location = new System.Drawing.Point(340, 342);
+            this.buttonAddImage.Location = new System.Drawing.Point(663, 342);
             this.buttonAddImage.Name = "buttonAddImage";
             this.buttonAddImage.Size = new System.Drawing.Size(75, 23);
             this.buttonAddImage.TabIndex = 3;
@@ -98,7 +99,7 @@
             // buttonAddCategory
             // 
             this.buttonAddCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddCategory.Location = new System.Drawing.Point(254, 342);
+            this.buttonAddCategory.Location = new System.Drawing.Point(577, 342);
             this.buttonAddCategory.Name = "buttonAddCategory";
             this.buttonAddCategory.Size = new System.Drawing.Size(80, 23);
             this.buttonAddCategory.TabIndex = 4;
@@ -106,11 +107,23 @@
             this.buttonAddCategory.UseVisualStyleBackColor = true;
             this.buttonAddCategory.Click += new System.EventHandler(this.buttonAddCategory_Click);
             // 
+            // buttonReplaceInUpdate
+            // 
+            this.buttonReplaceInUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonReplaceInUpdate.Location = new System.Drawing.Point(179, 342);
+            this.buttonReplaceInUpdate.Name = "buttonReplaceInUpdate";
+            this.buttonReplaceInUpdate.Size = new System.Drawing.Size(113, 23);
+            this.buttonReplaceInUpdate.TabIndex = 5;
+            this.buttonReplaceInUpdate.Text = "Replace in Update";
+            this.buttonReplaceInUpdate.UseVisualStyleBackColor = true;
+            this.buttonReplaceInUpdate.Click += new System.EventHandler(this.buttonReplaceInUpdate_Click);
+            // 
             // FaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(427, 377);
+            this.ClientSize = new System.Drawing.Size(750, 377);
+            this.Controls.Add(this.buttonReplaceInUpdate);
             this.Controls.Add(this.buttonAddCategory);
             this.Controls.Add(this.buttonAddImage);
             this.Controls.Add(this.buttonSave);
@@ -131,6 +144,7 @@
         private System.Windows.Forms.Button buttonAddImage;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.Button buttonAddCategory;
+        private System.Windows.Forms.Button buttonReplaceInUpdate;
 
 
 
