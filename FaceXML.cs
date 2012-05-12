@@ -36,8 +36,13 @@ namespace FaceCopy
                     {
                         Pathlist.Add(Path.InnerText);
                     }
+                    String Name = "";
+                    if (Image["name"] != null)
+                    {
+                        Name = Image["name"].InnerText;
+                    }
 
-                    FaceImageList.Add(new FaceImage(CategoryName, URL, Pathlist));
+                    FaceImageList.Add(new FaceImage(CategoryName, URL, Pathlist, Name));
                 }
 
                 Categories.Add(CategoryName, FaceImageList);
@@ -82,6 +87,10 @@ namespace FaceCopy
                     foreach (String Path in Paths.Distinct())
                     {
                         sb.Append("\t\t\t<path>").Append(Path).AppendLine("</path>");
+                    }
+                    if (!String.IsNullOrEmpty(f.Name))
+                    {
+                        sb.AppendLine("\t\t\t<name>").Append(f.Name).AppendLine("</name>");
                     }
                     sb.AppendLine("\t\t</image>");
                 }

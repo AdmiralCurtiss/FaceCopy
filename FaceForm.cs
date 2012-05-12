@@ -78,7 +78,7 @@ namespace FaceCopy
                 if (r.OK)
                 {
                     String CurrentCategory = tabControl1.SelectedTab.Text;
-                    FaceImage Image = new FaceImage(CurrentCategory, r.Text, dialog.FileName);
+                    FaceImage Image = new FaceImage(CurrentCategory, r.Text, dialog.FileName, "");
                     AllFacesControl.SuspendLayout();
                     AllFacesControl.Add(Image);
                     AllFacesControl.ResumeLayout(true);

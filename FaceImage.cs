@@ -28,6 +28,7 @@ namespace FaceCopy
         //private String _Filename = null;
 
         public String Category;
+        public String Name;
 
         public System.Drawing.Image Face {
             get {
@@ -63,6 +64,7 @@ namespace FaceCopy
             {
                 try
                 {
+                    // try to get from URL
                     WebRequest req = WebRequest.Create(URL);
                     WebResponse response = req.GetResponse();
                     Stream stream = response.GetResponseStream();
@@ -72,8 +74,8 @@ namespace FaceCopy
                     System.IO.Directory.CreateDirectory(folder);
 
                     String filename = URL.Substring(URL.LastIndexOf('/') + 1);
-                    String path = folder + "\\" + filename;
-                    FileStream fs = System.IO.File.Open(path, FileMode.Create);
+                    String tmppath = System.IO.Path.GetTempFileName();
+                    FileStream fs = System.IO.File.Open(tmppath, FileMode.Create);
 
                     Byte[] buffer = new byte[1024 * 8];
                     int bytesread = 0;
@@ -83,6 +85,10 @@ namespace FaceCopy
                     }
                     fs.Close();
 
+                    String chksum = GetChecksum(tmppath);
+                    String path = folder + "\\" + chksum + "_" + filename;
+                    System.IO.File.Move(tmppath, path);
+
                     // add new paths to path list
                     this.Paths.Add(path);
 
@@ -91,26 +97,38 @@ namespace FaceCopy
 
                     _Face = System.Drawing.Image.FromFile(path);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     _Face = FaceCopy.Properties.Resources.CouldNotOpenImage;
                 }
             }
         }
 
-        public FaceImage(String Category, String URL, String Path)
+        private static string GetChecksum(string file)
+        {
+            using (FileStream stream = File.OpenRead(file))
+            {
+                System.Security.Cryptography.SHA1Managed sha = new System.Security.Cryptography.SHA1Managed();
+                byte[] checksum = sha.ComputeHash(stream);
+                return BitConverter.ToString(checksum).Replace("-", String.Empty);
+            }
+        }
+
+        public FaceImage(String Category, String URL, String Path, String Name)
         {
             this.Category = Category;
             this.URL = URL;
             this.Paths = new List<String>();
             this.Paths.Add(Path);
+            this.Name = Name;
         }
 
-        public FaceImage(String Category, String URL, List<String> Paths)
+        public FaceImage(String Category, String URL, List<String> Paths, String Name)
         {
             this.Category = Category;
             this.URL = URL;
             this.Paths = Paths;
+            this.Name = Name;
         }
 
         public override string ToString()

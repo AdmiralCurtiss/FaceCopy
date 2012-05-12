@@ -31,6 +31,10 @@ namespace FaceCopy
             mi.Click += new EventHandler(mi_EditURL_Click);
             menuitems.Add(mi);
 
+            mi = new MenuItem("Edit Name");
+            mi.Click += new EventHandler(mi_EditName_Click);
+            menuitems.Add(mi);
+
             mi = new MenuItem("Delete");
             mi.Click += new EventHandler(mi_Delete_Click);
             menuitems.Add(mi);
@@ -46,6 +50,14 @@ namespace FaceCopy
             if (r.OK)
             {
                 this.Face.URL = r.Text;
+            }
+        }
+        void mi_EditName_Click(object sender, EventArgs e)
+        {
+            InputBoxResult r = InputBox.Show("Name:", "Image Name", this.Face.Name, null);
+            if (r.OK)
+            {
+                this.Face.Name = r.Text;
             }
         }
 
