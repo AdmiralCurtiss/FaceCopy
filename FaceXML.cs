@@ -12,14 +12,20 @@ namespace FaceCopy
 
         public FaceXML()
         {
-            Categories = new Dictionary<string, List<FaceImage>>();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml("<categories></categories>");
+            Initialize(xmlDoc);
         }
 
         public FaceXML(String XMLPath)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(XMLPath);
+            Initialize(xmlDoc);
+        }
 
+        private void Initialize(XmlDocument xmlDoc)
+        {
             Categories = new Dictionary<string, List<FaceImage>>();
 
             foreach (XmlElement Category in xmlDoc["categories"].GetElementsByTagName("category"))
@@ -47,8 +53,6 @@ namespace FaceCopy
 
                 Categories.Add(CategoryName, FaceImageList);
             }
-
-            return;
         }
 
         public void AddCategory(String Category, List<FaceImage> ImageList)

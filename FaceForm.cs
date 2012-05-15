@@ -20,8 +20,7 @@ namespace FaceCopy
             InitializeComponent();
 
             XML = new FaceXML();
-            AllFacesControl = new FaceImageListControl(XML, this);
-            FaceControls = new Dictionary<string, FaceImageListControl>();
+            LoadXML(XML);
         }
 
         public FaceForm(FaceXML XML)
