@@ -46,7 +46,7 @@ namespace FaceCopy
 
         void mi_EditURL_Click(object sender, EventArgs e)
         {
-            InputBoxResult r = InputBox.Show("URL:", "Image URL", this.Face.URL, null);
+            InputBoxResult r = InputBox.Show("URL:", "Image URL", this.Face.URL, null, false);
             if (r.OK)
             {
                 this.Face.URL = r.Text;
@@ -54,7 +54,7 @@ namespace FaceCopy
         }
         void mi_EditName_Click(object sender, EventArgs e)
         {
-            InputBoxResult r = InputBox.Show("Name:", "Image Name", this.Face.Name, null);
+			InputBoxResult r = InputBox.Show( "Name:", "Image Name", this.Face.Name, null, false );
             if (r.OK)
             {
                 this.Face.Name = r.Text;

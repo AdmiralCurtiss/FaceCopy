@@ -73,7 +73,7 @@ namespace FaceCopy
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                InputBoxResult r = InputBox.Show("URL:", "Image URL", "", null);
+				InputBoxResult r = InputBox.Show( "URL:", "Image URL", "", null, false );
                 if (r.OK)
                 {
                     String CurrentCategory = tabControl1.SelectedTab.Text;
@@ -85,6 +85,7 @@ namespace FaceCopy
                     FaceControls[CurrentCategory].SuspendLayout();
                     FaceControls[CurrentCategory].Add(Image);
                     FaceControls[CurrentCategory].ResumeLayout(true);
+					FaceControls[CurrentCategory].Refresh();
 
                     this.Refresh();
                 }
@@ -109,12 +110,14 @@ namespace FaceCopy
             {
                 // All category
                 this.buttonAddImage.Enabled = false;
+				this.buttonAddMultiUrl.Enabled = false;
                 AllFacesControl.Refresh();
             }
             else
             {
                 // any category
                 this.buttonAddImage.Enabled = true;
+				this.buttonAddMultiUrl.Enabled = true;
                 FaceControls[tabControl1.SelectedTab.Text].Refresh();
             }
 
@@ -123,7 +126,7 @@ namespace FaceCopy
 
         private void buttonAddCategory_Click(object sender, EventArgs e)
         {
-            InputBoxResult r = InputBox.Show("New category name:", "Add Category", "", null);
+			InputBoxResult r = InputBox.Show( "New category name:", "Add Category", "", null, false );
             if (r.OK && !String.IsNullOrEmpty(r.Text))
             {
                 if (FaceControls.Keys.Contains(r.Text))
@@ -171,5 +174,29 @@ namespace FaceCopy
                 this.XML.ReplaceInUpdate(dialog.FileName);
             }
         }
+
+		private void buttonAddMultiUrl_Click( object sender, EventArgs e ) {
+			if ( tabControl1.SelectedTab == tabPage1 ) return;
+
+			InputBoxResult r = InputBox.Show( "Copy-paste URL list from Rightload:", "Image URLs", "", null, true );
+			if ( r.OK ) {
+				String CurrentCategory = tabControl1.SelectedTab.Text;
+
+				AllFacesControl.SuspendLayout();
+				FaceControls[CurrentCategory].SuspendLayout();
+				foreach ( string url in r.Text.Split( new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries ) ) {
+					FaceImage Image = new FaceImage( CurrentCategory, url, "", "" );
+					AllFacesControl.Add( Image );
+					FaceControls[CurrentCategory].Add( Image );
+				}
+				AllFacesControl.ResumeLayout( true );
+				AllFacesControl.Refresh();
+				FaceControls[CurrentCategory].ResumeLayout( true );
+				FaceControls[CurrentCategory].Refresh();
+
+				this.Refresh();
+			}
+			
+		}
     }
 }
