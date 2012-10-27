@@ -90,7 +90,9 @@ namespace FaceCopy
                     List<String> Paths = f.Paths;
                     foreach (String Path in Paths.Distinct())
                     {
-                        sb.Append("\t\t\t<path>").Append(Path).AppendLine("</path>");
+						if ( !String.IsNullOrEmpty( Path ) ) {
+							sb.Append( "\t\t\t<path>" ).Append( Path ).AppendLine( "</path>" );
+						}
                     }
                     if (!String.IsNullOrEmpty(f.Name))
                     {
