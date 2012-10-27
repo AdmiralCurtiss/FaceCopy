@@ -7,7 +7,7 @@ using System.IO;
 
 namespace FaceCopy
 {
-    public class FaceImage
+    public class FaceImage : IComparable<FaceImage>
     {
         public String URL;
         public List<String> Paths;
@@ -153,5 +153,9 @@ namespace FaceCopy
         {
             return "[" + this.Category + "] " + this.Paths.FirstOrDefault();
         }
-    }
+
+		public int CompareTo( FaceImage other ) {
+			return this.URL.Substring(this.URL.LastIndexOf( '/' ) + 1).CompareTo( other.URL.Substring(other.URL.LastIndexOf( '/' ) + 1 ) );
+		}
+	}
 }

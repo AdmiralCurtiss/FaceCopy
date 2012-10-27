@@ -83,6 +83,9 @@ namespace FaceCopy
             foreach (KeyValuePair<String, List<FaceImage>> KVP in Categories)
             {
                 sb.Append("\t<category name=\"").Append(KVP.Key).AppendLine("\">");
+
+				//KVP.Value.Sort();
+
                 foreach (FaceImage f in KVP.Value)
                 {
                     sb.AppendLine("\t\t<image>");
