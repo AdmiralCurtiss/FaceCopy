@@ -198,5 +198,9 @@ namespace FaceCopy
 			}
 			
 		}
+
+		public bool IsImgTagChecked {
+			get { return checkBoxImgTags.Checked; }
+		}
     }
 }

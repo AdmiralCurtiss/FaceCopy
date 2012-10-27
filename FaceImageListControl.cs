@@ -17,7 +17,7 @@ namespace FaceCopy
 
         // the control for the "all" category
         FaceImageListControl AllControl;
-        FaceForm ParentFaceForm;
+		FaceForm ParentFaceForm;
 
         public FaceImageListControl(String Category, List<FaceImage> ImageList, FaceImageListControl AllControl, FaceForm ParentForm)
         {
@@ -41,6 +41,10 @@ namespace FaceCopy
             this.ParentFaceForm = ParentForm;
             FillViewFromXML();
         }
+
+		public FaceForm GetParentFaceForm() {
+			return ParentFaceForm;
+		}
 
         public void Add(FaceImage Face)
         {

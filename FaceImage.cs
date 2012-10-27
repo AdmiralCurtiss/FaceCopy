@@ -87,6 +87,13 @@ namespace FaceCopy
 
                     String chksum = GetChecksum(tmppath);
                     String path = folder + "\\" + chksum + "_" + filename;
+
+					int filecount = 0;
+					while ( System.IO.File.Exists( path ) ) {
+						filecount++;
+						path = folder + "\\" + chksum + "_" + filename + "_" + filecount.ToString();
+					}
+
                     System.IO.File.Move(tmppath, path);
 
                     // add new paths to path list
@@ -97,7 +104,7 @@ namespace FaceCopy
 
                     _Face = System.Drawing.Image.FromFile(path);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _Face = FaceCopy.Properties.Resources.CouldNotOpenImage;
                 }
@@ -116,20 +123,31 @@ namespace FaceCopy
 
         public FaceImage(String Category, String URL, String Path, String Name)
         {
-            this.Category = Category;
-            this.URL = URL;
-            this.Paths = new List<String>();
-            this.Paths.Add(Path);
-            this.Name = Name;
+            List<String> p = new List<String>();
+            p.Add(Path);
+
+			Initialize( Category, URL, p, Name );
         }
 
         public FaceImage(String Category, String URL, List<String> Paths, String Name)
         {
-            this.Category = Category;
-            this.URL = URL;
-            this.Paths = Paths;
-            this.Name = Name;
+			Initialize( Category, URL, Paths, Name );
         }
+
+		private void Initialize( String Category, String URL, List<String> Paths, String Name ) {
+
+			if ( URL.StartsWith( "[img]", StringComparison.InvariantCultureIgnoreCase ) ) {
+				URL.Remove( 0, "[img]".Length );
+			}
+			if ( URL.EndsWith( "[/img]", StringComparison.InvariantCultureIgnoreCase ) ) {
+				URL.Remove( URL.Length - "[/img]".Length );
+			}
+
+			this.Category = Category;
+			this.URL = URL;
+			this.Paths = Paths;
+			this.Name = Name;
+		}
 
         public override string ToString()
         {

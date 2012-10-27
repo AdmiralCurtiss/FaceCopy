@@ -85,7 +85,11 @@ namespace FaceCopy
                 else
                 {
                     // default behavior, copy URL to clipboard
-                    Clipboard.SetText("[img]" + Face.URL + "[/img]");
+					if ( FaceControlParent.GetParentFaceForm().IsImgTagChecked ) {
+						Clipboard.SetText( "[img]" + Face.URL + "[/img]" );
+					} else {
+						Clipboard.SetText( Face.URL );
+					}
                 }
             } catch ( InvalidCastException ) {
                 // was apparently not a mouse click!
