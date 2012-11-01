@@ -94,6 +94,16 @@ namespace FaceCopy
                     foreach (String Path in Paths.Distinct())
                     {
 						if ( !String.IsNullOrEmpty( Path ) ) {
+							/* ToV big skit faces...
+							string BigPath = @"\_svn\Tales of Vesperia LP\ToV_heads\gamerip\halfsize\";
+							string BigPathMod = @"\_svn\Tales of Vesperia LP\ToV_heads\gamerip\halfmod\";
+							string filename = f.URL.Substring( f.URL.LastIndexOf( '/' ) + 1 );
+							sb.Append( "\t\t\t<path>" ).Append( "c:" + BigPath + filename ).AppendLine( "</path>" );
+							sb.Append( "\t\t\t<path>" ).Append( "c:" + BigPathMod + filename ).AppendLine( "</path>" );
+							sb.Append( "\t\t\t<path>" ).Append( "d:" + BigPath + filename ).AppendLine( "</path>" );
+							sb.Append( "\t\t\t<path>" ).Append( "d:" + BigPathMod + filename ).AppendLine( "</path>" );
+							//*/
+
 							sb.Append( "\t\t\t<path>" ).Append( Path ).AppendLine( "</path>" );
 						}
                     }
