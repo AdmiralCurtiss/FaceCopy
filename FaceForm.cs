@@ -21,6 +21,7 @@ namespace FaceCopy
 
             XML = new FaceXML();
             LoadXML(XML);
+			AllFacesControl.Focus();
         }
 
         public FaceForm(FaceXML XML)
@@ -29,6 +30,7 @@ namespace FaceCopy
 
             LoadXML(XML);
             this.Height++;
+			AllFacesControl.Focus();
         }
 
         public void LoadXML(FaceXML XML)
@@ -112,13 +114,15 @@ namespace FaceCopy
                 this.buttonAddImage.Enabled = false;
 				this.buttonAddMultiUrl.Enabled = false;
                 AllFacesControl.Refresh();
-            }
+				AllFacesControl.Focus();
+			}
             else
             {
                 // any category
                 this.buttonAddImage.Enabled = true;
 				this.buttonAddMultiUrl.Enabled = true;
-                FaceControls[tabControl1.SelectedTab.Text].Refresh();
+				FaceControls[tabControl1.SelectedTab.Text].Refresh();
+				FaceControls[tabControl1.SelectedTab.Text].Focus();
             }
 
 
@@ -201,6 +205,22 @@ namespace FaceCopy
 
 		public bool IsImgTagChecked {
 			get { return checkBoxImgTags.Checked; }
+		}
+
+		private void FaceForm_Scroll( object sender, ScrollEventArgs e ) {
+		}
+
+		private void FaceForm_MouseEnter( object sender, EventArgs e ) {
+			if ( tabControl1.SelectedTab == tabPage1 || tabControl1.SelectedTab == null ) {
+				// All category
+				AllFacesControl.Focus();
+			} else {
+				// any category
+				FaceControls[tabControl1.SelectedTab.Text].Focus();
+			}
+		}
+
+		private void FaceForm_MouseLeave( object sender, EventArgs e ) {
 		}
     }
 }
