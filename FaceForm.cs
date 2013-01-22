@@ -213,10 +213,14 @@ namespace FaceCopy
 		private void FaceForm_MouseEnter( object sender, EventArgs e ) {
 			if ( tabControl1.SelectedTab == tabPage1 || tabControl1.SelectedTab == null ) {
 				// All category
-				AllFacesControl.Focus();
+				if ( !AllFacesControl.Focused ) {
+					AllFacesControl.Focus();
+				}
 			} else {
 				// any category
-				FaceControls[tabControl1.SelectedTab.Text].Focus();
+				if ( !FaceControls[tabControl1.SelectedTab.Text].Focused ) {
+					FaceControls[tabControl1.SelectedTab.Text].Focus();
+				}
 			}
 		}
 

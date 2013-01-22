@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1 = new CustomFlowLayoutPanel();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
