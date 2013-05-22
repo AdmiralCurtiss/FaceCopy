@@ -159,7 +159,7 @@
 			this.Controls.Add(this.buttonOpen);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "FaceForm";
-			this.Text = "FaceCopy v1.41";
+			this.Text = "FaceCopy v1.42";
 			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.FaceForm_Scroll);
 			this.MouseEnter += new System.EventHandler(this.FaceForm_MouseEnter);
 			this.MouseLeave += new System.EventHandler(this.FaceForm_MouseLeave);

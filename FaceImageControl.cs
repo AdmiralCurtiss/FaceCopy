@@ -15,6 +15,9 @@ namespace FaceCopy
         private ContextMenu RightClickMenu;
         private MenuItem[] RightClickMenuItems;
         private FaceImageListControl FaceControlParent;
+		private System.Drawing.Imaging.ImageAttributes ImageAttrs;
+		private System.Drawing.Imaging.ColorMatrix ColorMatrix;
+		private System.Threading.Timer ResetTintedImageTimer;
 
         public FaceImageControl(FaceImage Face, FaceImageListControl FaceControlParent)
         {
@@ -42,6 +45,9 @@ namespace FaceCopy
 
             RightClickMenuItems = menuitems.ToArray();
             RightClickMenu = new System.Windows.Forms.ContextMenu(RightClickMenuItems);
+
+			ImageAttrs = new System.Drawing.Imaging.ImageAttributes();
+			ColorMatrix = new System.Drawing.Imaging.ColorMatrix();
         }
 
         void mi_EditURL_Click(object sender, EventArgs e)
@@ -70,7 +76,9 @@ namespace FaceCopy
         protected override void OnPaint(PaintEventArgs pe)
         {
             base.OnPaint(pe);
-            pe.Graphics.DrawImage(Face.Face, 0, 0);
+			ImageAttrs.SetColorMatrix( ColorMatrix );
+            pe.Graphics.DrawImage(Face.Face, new Rectangle(0, 0, Face.Face.Width, Face.Face.Height),
+				0, 0, Face.Face.Width, Face.Face.Height, GraphicsUnit.Pixel, ImageAttrs);
         }
 
         private void FaceImageControl_Click(object sender, EventArgs e)
@@ -90,6 +98,12 @@ namespace FaceCopy
 					} else {
 						Clipboard.SetText( Face.URL );
 					}
+					// tint blue & redraw
+					ColorMatrix.Matrix22 = 2.0f;
+					Invalidate();
+					ResetTintedImageTimer = new System.Threading.Timer(
+						x => { ColorMatrix.Matrix22 = 1.0f; Invalidate(); },
+						null, 100, System.Threading.Timeout.Infinite);
                 }
             } catch ( InvalidCastException ) {
                 // was apparently not a mouse click!
