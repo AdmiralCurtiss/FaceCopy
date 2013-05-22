@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FaceForm));
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.buttonOpen = new System.Windows.Forms.Button();
@@ -158,6 +159,7 @@
 			this.Controls.Add(this.buttonSave);
 			this.Controls.Add(this.buttonOpen);
 			this.Controls.Add(this.tabControl1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "FaceForm";
 			this.Text = "FaceCopy v1.42";
 			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.FaceForm_Scroll);
