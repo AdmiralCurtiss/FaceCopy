@@ -64,6 +64,7 @@
 			this.tabControl1.Size = new System.Drawing.Size(725, 322);
 			this.tabControl1.TabIndex = 0;
 			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+			this.tabControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseClick);
 			// 
 			// buttonOpen
 			// 

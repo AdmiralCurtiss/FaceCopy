@@ -116,5 +116,9 @@ namespace FaceCopy {
 				return false;
 			}
 		}
+
+		public bool RemoveCategory( string Category ) {
+			return Categories.Remove( Category );
+		}
 	}
 }

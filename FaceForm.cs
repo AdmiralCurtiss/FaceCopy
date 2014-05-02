@@ -13,17 +13,24 @@ namespace FaceCopy {
 		public FaceImageListControl AllFacesControl;
 		public Dictionary<String, FaceImageListControl> FaceControls;
 
+		public bool IsImgTagChecked {
+			get { return checkBoxImgTags.Checked; }
+		}
+		public bool IsSelectedCategoryAllCategory {
+			get { return tabControl1.SelectedTab == tabPage1 || tabControl1.SelectedTab == null; }
+		}
+
 		public FaceForm() {
 			InitializeComponent();
-
-			XML = new FaceXML();
-			LoadXML( XML );
-			AllFacesControl.Focus();
+			Initialize( new FaceXML() );
 		}
 
 		public FaceForm( FaceXML XML ) {
 			InitializeComponent();
+			Initialize( XML );
+		}
 
+		public void Initialize( FaceXML XML ) {
 			LoadXML( XML );
 			this.Height++;
 			AllFacesControl.Focus();
@@ -109,8 +116,6 @@ namespace FaceCopy {
 				FaceControls[tabControl1.SelectedTab.Text].Refresh();
 				FaceControls[tabControl1.SelectedTab.Text].Focus();
 			}
-
-
 		}
 
 		private void buttonAddCategory_Click( object sender, EventArgs e ) {
@@ -181,21 +186,15 @@ namespace FaceCopy {
 
 		}
 
-		public bool IsImgTagChecked {
-			get { return checkBoxImgTags.Checked; }
-		}
-
 		private void FaceForm_Scroll( object sender, ScrollEventArgs e ) {
 		}
 
 		private void FaceForm_MouseEnter( object sender, EventArgs e ) {
-			if ( tabControl1.SelectedTab == tabPage1 || tabControl1.SelectedTab == null ) {
-				// All category
+			if ( IsSelectedCategoryAllCategory ) {
 				if ( !AllFacesControl.Focused ) {
 					AllFacesControl.Focus();
 				}
 			} else {
-				// any category
 				if ( !FaceControls[tabControl1.SelectedTab.Text].Focused ) {
 					FaceControls[tabControl1.SelectedTab.Text].Focus();
 				}
@@ -203,6 +202,34 @@ namespace FaceCopy {
 		}
 
 		private void FaceForm_MouseLeave( object sender, EventArgs e ) {
+		}
+
+		private void tabControl1_MouseClick( object sender, MouseEventArgs e ) {
+			try {
+				MouseEventArgs me = (MouseEventArgs)e;
+				if ( !IsSelectedCategoryAllCategory && me.Button == MouseButtons.Right ) {
+					MenuItem mi;
+					mi = new MenuItem( "Delete Category: " + tabControl1.SelectedTab.Text );
+					mi.Click += new EventHandler( mi_Delete_Click );
+
+					var TabRightClickMenu = new System.Windows.Forms.ContextMenu( new MenuItem[] { mi } );
+					TabRightClickMenu.GetContextMenu().Show( this, new Point( me.X + tabControl1.Location.X, me.Y + tabControl1.Location.Y ) );
+				}
+			} catch ( InvalidCastException ) {
+				// was apparently not a mouse click!
+			}
+		}
+
+		void mi_Delete_Click( object sender, EventArgs e ) {
+			string categoryName = tabControl1.SelectedTab.Text;
+
+			FaceImageListControl fc = FaceControls[categoryName];
+			fc.RemoveAllImages( true );
+			XML.RemoveCategory( categoryName );
+
+			TabPage tabToRemove = tabControl1.SelectedTab;
+			tabControl1.DeselectTab( tabToRemove );
+			tabControl1.Controls.Remove( tabToRemove );
 		}
 	}
 }

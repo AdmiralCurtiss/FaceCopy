@@ -76,7 +76,7 @@ namespace FaceCopy {
 			this.flowLayoutPanel1.ResumeLayout( false );
 		}
 
-		public void Remove( FaceImageControl faceImageControl, bool AllowRecursiveRemove ) {
+		public void Remove( FaceImageControl faceImageControl, bool RemoveFromOtherCategoriesAsWell ) {
 			flowLayoutPanel1.SuspendLayout();
 
 			// no idew how this internally compares stuff, apparently not with Equals() which is fucking dumb but oh well
@@ -88,26 +88,39 @@ namespace FaceCopy {
 				}
 			}
 
+			RemoveFromXmlOrList( faceImageControl, RemoveFromOtherCategoriesAsWell );
 
+			flowLayoutPanel1.ResumeLayout( true );
+			flowLayoutPanel1.Refresh();
+		}
+
+		public void RemoveAllImages( bool RemoveFromOtherCategoriesAsWell ) {
+			flowLayoutPanel1.SuspendLayout();
+			foreach ( FaceImageControl faceImageControl in flowLayoutPanel1.Controls ) {
+				RemoveFromXmlOrList( faceImageControl, RemoveFromOtherCategoriesAsWell );
+			}
+			flowLayoutPanel1.Controls.Clear();
+			flowLayoutPanel1.ResumeLayout( true );
+			flowLayoutPanel1.Refresh();
+		}
+
+		private void RemoveFromXmlOrList( FaceImageControl faceImageControl, bool RemoveFromOtherCategoriesAsWell ) {
 			if ( XML != null ) {
 				// is the "all" control
 				XML.Remove( faceImageControl.Face.Category, faceImageControl.Face );
-				if ( AllowRecursiveRemove ) {
+				if ( RemoveFromOtherCategoriesAsWell ) {
 					// delete from category it belongs to as well
 					ParentFaceForm.FaceControls[faceImageControl.Face.Category].Remove( faceImageControl, false );
 				}
 			} else {
 				// is a category
 				ImageList.Remove( faceImageControl.Face );
-				if ( AllowRecursiveRemove ) {
+				if ( RemoveFromOtherCategoriesAsWell ) {
 					// delete from all control as well
 					AllControl.Remove( faceImageControl, false );
 				}
 			}
-			flowLayoutPanel1.ResumeLayout( true );
-			flowLayoutPanel1.Refresh();
 		}
-
 
 	}
 }
