@@ -1,5 +1,6 @@
-FaceCopy v1.42 by Admiral H. Curtiss
+FaceCopy v1.43 by Admiral H. Curtiss
 Feel free to edit and redistribute
+https://github.com/AdmiralCurtiss/FaceCopy
 
 
 FaceCopy is a helper tool for Screenshot Let's Plays. If you're working with lots of character mugshots (or other recurring images), it can help you organize and retrieve them. This is especially useful if you have several different expressions for a single character, which can't be easily put into the LP update with a Find-and-Replace. FaceCopy shows you all mugshots at once, and you can simply click on one to copy it to the clipboard, ready to be pasted into the update next to the appropriate line.
@@ -12,6 +13,9 @@ Once an image is added, you can simply click on it to copy its URL including [im
 
 
 Version History:
+1.43
+- Categories can now be removed by right-clicking a category tab while it is selected.
+
 1.42
 - Images now blink blue when copying the URL, to give feedback about it registering your click.
 
